@@ -1,0 +1,48 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# --- Virtual envs ---
+.venv/
+venv/
+env/
+
+# --- IDE / editors ---
+.vscode/
+.idea/
+*.swp
+
+# --- Testing / tooling caches ---
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Project data (do NOT commit videos or generated match output) ---
+data/*
+!data/.gitkeep
+
+matches/*
+!matches/.gitkeep
+
+debug/
+*.mp4
+*.mkv
+*.avi
+*.mov
+
+# --- Model weights (downloaded on first use) ---
+*.pt
+*.onnx
+*.engine
+
+# --- OS ---
+Thumbs.db
+Desktop.ini

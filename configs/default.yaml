@@ -1,0 +1,37 @@
+video:
+  fps_target: 30
+  test_mode_seconds: 30
+
+paths:
+  models_dir: "data/models"
+  interim_dir: "data/interim"
+  processed_dir: "data/processed"
+
+
+detection:
+  model_file: "yolo26m.pt"      # resolved against paths.models_dir
+  device: "cuda"                # "cuda" | "cpu"
+  image_size: 1280
+  confidence_threshold:
+    ball: 0.25
+    player: 0.50
+    referee: 0.50
+    goalkeeper: 0.50
+
+
+tracking:
+  algorithm: "bytetrack"        # "bytetrack" | "botsort"
+  track_buffer: 30              # frames to keep "lost" track alive
+  match_threshold: 0.8
+
+output:
+  format: "json"                # "json" | "parquet"
+
+debug:
+  save_detection_video: false   # boxes + class labels
+  save_tracking_video: false    # boxes + IDs (color-coded per track)
+  save_final_video: false       # everything overlaid
+  output_dir: "data/debug"
+
+logging:
+  level: "INFO"

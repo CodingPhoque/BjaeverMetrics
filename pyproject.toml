@@ -1,0 +1,30 @@
+# pyproject.toml
+# We keep dependencies in requirements.txt (simpler for this project scope).
+# This file only configures ruff.
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["football_analytics", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort (import sorting)
+    "B",   # flake8-bugbear (common bugs)
+    "UP",  # pyupgrade (suggest modern syntax)
+    "SIM", # flake8-simplify
+]
+ignore = [
+    "E501",  # line-too-long — handled by the formatter
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["B011"]  # allow `assert False` in tests
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-ra --strict-markers"
