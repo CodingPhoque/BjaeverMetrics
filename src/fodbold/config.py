@@ -1,5 +1,6 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
+
 import yaml
 
 # TODO why only these dataclasses? Why not paths, or output, or logging?
@@ -20,7 +21,7 @@ class TrackingConfig:
 @dataclass
 class VideoConfig:
     fps_target: int
-    test_mode_second: int
+    test_mode_seconds: int
 
 @dataclass
 class DebugConfig:

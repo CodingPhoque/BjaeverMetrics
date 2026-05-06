@@ -9,7 +9,7 @@ paths:
 
 
 detection:
-  model_file: "yolo26m.pt"      # resolved against paths.models_dir
+  model_file: "yolo26m.pt"      # your trained local .pt file, resolved against paths.models_dir
   device: "cuda"                # "cuda" | "cpu"
   image_size: 1280
   confidence_threshold:
