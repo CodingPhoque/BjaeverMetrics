@@ -33,7 +33,10 @@ class FootballDetector:
 
     def __init__(self, config: DetectionConfig, models_dir: str | Path):
         self.config = config
-        self.thresholds = config.confidence_threshold
+        self.thresholds = {
+            class_name.strip().lower(): threshold
+            for class_name, threshold in config.confidence_threshold.items()
+        }
 
         self._validate_thresholds()
 
@@ -85,7 +88,8 @@ class FootballDetector:
 
     def _box_to_detection(self, result: Any, box: Any) -> Detection | None:
         class_id = int(box.cls.item())
-        class_name = result.names.get(class_id, str(class_id))
+        raw_class_name = result.names.get(class_id, str(class_id))
+        class_name = raw_class_name.strip().lower()
 
         # Note: ignore unexpected model classes defensively instead of crashing.
         if class_name not in self.CLASS_TO_OUTPUT_FIELD:
