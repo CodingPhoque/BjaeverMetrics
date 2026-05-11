@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from ultralytics import YOLO
 
 from fodbold.config import DetectionConfig
 
@@ -13,6 +12,7 @@ class Detection:
     class_name: str
     confidence: float
     bbox_xyxy: tuple[float, float, float, float]
+    team: str | None = None
 
 
 @dataclass(slots=True)
@@ -46,6 +46,8 @@ class FootballDetector:
                 f"YOLO model not found: {model_path}. "
                 "Place your trained .pt file in paths.models_dir or update detection.model_file."
             )
+
+        from ultralytics import YOLO
 
         self.model = YOLO(str(model_path))
 
