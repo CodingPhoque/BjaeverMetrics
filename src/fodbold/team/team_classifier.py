@@ -41,3 +41,4 @@ class TeamClassifier:
 
         cluster_id = int(self.model.predict(feature.reshape(1, -1))[0])
         return "team_a" if cluster_id == 0 else "team_b"
+    

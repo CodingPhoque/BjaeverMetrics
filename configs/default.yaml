@@ -22,7 +22,7 @@ team_classification:
   enabled: true
   fit_frames: 200               # sampled frames used to learn stable team colors
   min_fit_samples: 50           # minimum valid player jersey crops before fitting
-  color_space: "lab"            # note: color_features.py currently supports LAB features
+  color_space: "lab"            
   jersey_crop:
     x_margin_ratio: 0.20        # trims bbox sides to reduce arms/background
     y_start_ratio: 0.20         # skips head/upper shoulders

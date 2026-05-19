@@ -26,10 +26,10 @@ class TeamAssignment:
     def is_fitted(self) -> bool:
         return self.classifier.is_fitted
 
+    
     def process_frame(self, frame: np.ndarray, detections: FrameDetections) -> None:
         if not self.classifier.is_fitted:
-            # Note: simple first version. Warmup frames are used to learn team colors,
-            # so players in these frames keep team=None and do not get backfilled.
+            # Warmup frames are used to learn team colors, but not assigned to players.
             self._collect_features(frame, detections)
             self.frames_seen += 1
 
@@ -57,3 +57,5 @@ class TeamAssignment:
             feature = extract_jersey_color(frame, player.bbox_xyxy, self.jersey_config)
             if feature is not None:
                 player.team = self.classifier.predict(feature)
+
+
