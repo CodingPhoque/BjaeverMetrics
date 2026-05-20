@@ -3,6 +3,8 @@ from pathlib import Path
 
 import yaml
 
+from fodbold.team.color_features import JerseyColorConfig
+
 # TODO why only these dataclasses? Why not paths, or output, or logging?
 
 @dataclass
@@ -24,6 +26,27 @@ class VideoConfig:
     test_mode_seconds: int
 
 @dataclass
+class TeamClassificationConfig:
+    enabled: bool
+    fit_frames: int
+    min_fit_samples: int
+    color_space: str
+    jersey_crop: dict[str, float]
+    grass_filter: dict
+
+    def to_jersey_color_config(self) -> JerseyColorConfig:
+        # Note: this keeps YAML tuning values in one place while color extraction
+        # receives the small config object it actually needs.
+        return JerseyColorConfig(
+            x_margin_ratio=self.jersey_crop["x_margin_ratio"],
+            y_start_ratio=self.jersey_crop["y_start_ratio"],
+            y_end_ratio=self.jersey_crop["y_end_ratio"],
+            min_pixels=self.grass_filter["min_pixels"],
+            grass_hsv_lower=tuple(self.grass_filter["hsv_lower"]),
+            grass_hsv_upper=tuple(self.grass_filter["hsv_upper"]),
+        )
+
+@dataclass
 class DebugConfig:
     save_detection_video: bool
     save_tracking_video: bool
@@ -34,6 +57,7 @@ class DebugConfig:
 class Config:
     video: VideoConfig
     detection: DetectionConfig
+    team_classification: TeamClassificationConfig
     tracking: TrackingConfig
     debug: DebugConfig
     paths: dict[str, str] 
@@ -47,6 +71,7 @@ class Config:
         return cls(
             video=VideoConfig(**raw["video"]),
             detection=DetectionConfig(**raw["detection"]),
+            team_classification=TeamClassificationConfig(**raw["team_classification"]),
             tracking=TrackingConfig(**raw["tracking"]),
             debug=DebugConfig(**raw["debug"]),
             paths=raw["paths"],

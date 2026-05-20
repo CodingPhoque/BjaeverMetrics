@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
-from ultralytics import YOLO
 
 from fodbold.config import DetectionConfig
 
@@ -13,6 +12,7 @@ class Detection:
     class_name: str
     confidence: float
     bbox_xyxy: tuple[float, float, float, float]
+    team: str | None = None
 
 
 @dataclass(slots=True)
@@ -33,7 +33,10 @@ class FootballDetector:
 
     def __init__(self, config: DetectionConfig, models_dir: str | Path):
         self.config = config
-        self.thresholds = config.confidence_threshold
+        self.thresholds = {
+            class_name.strip().lower(): threshold
+            for class_name, threshold in config.confidence_threshold.items()
+        }
 
         self._validate_thresholds()
 
@@ -43,6 +46,8 @@ class FootballDetector:
                 f"YOLO model not found: {model_path}. "
                 "Place your trained .pt file in paths.models_dir or update detection.model_file."
             )
+
+        from ultralytics import YOLO
 
         self.model = YOLO(str(model_path))
 
@@ -85,7 +90,8 @@ class FootballDetector:
 
     def _box_to_detection(self, result: Any, box: Any) -> Detection | None:
         class_id = int(box.cls.item())
-        class_name = result.names.get(class_id, str(class_id))
+        raw_class_name = result.names.get(class_id, str(class_id))
+        class_name = raw_class_name.strip().lower()
 
         # Note: ignore unexpected model classes defensively instead of crashing.
         if class_name not in self.CLASS_TO_OUTPUT_FIELD:

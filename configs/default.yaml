@@ -9,7 +9,7 @@ paths:
 
 
 detection:
-  model_file: "yolo26m.pt"      # your trained local .pt file, resolved against paths.models_dir
+  model_file: "yolo26mtrained.pt"      # your trained local .pt file, ensure precise filename
   device: "cuda"                # "cuda" | "cpu"
   image_size: 1280
   confidence_threshold:
@@ -18,6 +18,19 @@ detection:
     referee: 0.50
     goalkeeper: 0.50
 
+team_classification:
+  enabled: true
+  fit_frames: 200               # sampled frames used to learn stable team colors
+  min_fit_samples: 50           # minimum valid player jersey crops before fitting
+  color_space: "lab"            
+  jersey_crop:
+    x_margin_ratio: 0.20        # trims bbox sides to reduce arms/background
+    y_start_ratio: 0.20         # skips head/upper shoulders
+    y_end_ratio: 0.65           # avoids shorts/legs
+  grass_filter:
+    min_pixels: 20              # reject crops with too few non-grass pixels
+    hsv_lower: [35, 40, 40]     # tune if field lighting makes grass leak through
+    hsv_upper: [90, 255, 255]   # tune together with hsv_lower
 
 tracking:
   algorithm: "bytetrack"        # "bytetrack" | "botsort"
