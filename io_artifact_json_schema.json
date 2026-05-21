@@ -1,0 +1,45 @@
+{
+  "artifact_type": "io",
+  "schema_version": "1.0",
+  "video": {
+    "video_id": "frem_bjaeverskov_vs_team_x_2026_05_12",
+    "file_name": "match.mp4",
+    "path": "data/raw/match.mp4",
+    "file_size_bytes": 1234567890,
+    "checksum": "optional-but-useful"
+  },
+  "video_properties": {
+    "fps_original": 60.0,
+    "frame_count": 324000,
+    "duration_seconds": 5400.0,
+    "width": 1920,
+    "height": 1080,
+    "codec": "h264"
+  },
+  "processing": {
+    "fps_target": 30.0,
+    "frame_stride": 2,
+    "segments": [
+      {
+        "name": "first_half",
+        "start_frame": 3600,
+        "end_frame": 165600,
+        "start_time_seconds": 60.0,
+        "end_time_seconds": 2760.0
+      },
+      {
+        "name": "second_half",
+        "start_frame": 172800,
+        "end_frame": 334800,
+        "start_time_seconds": 2880.0,
+        "end_time_seconds": 5580.0
+      }
+    ]
+  },
+  "match": {
+    "date": "2026-05-12",
+    "home_team": "IF Frem Bjaeverskov",
+    "away_team": "Team X",
+    "venue": null
+  }
+}
