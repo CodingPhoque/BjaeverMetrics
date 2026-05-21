@@ -6,7 +6,7 @@
     "file_name": "match.mp4",
     "path": "data/raw/match.mp4",
     "file_size_bytes": 1234567890,
-    "checksum": "optional-but-useful"
+    "checksum": "optional-but-useful",                  "CHECKSUM KAN MULIGVIS FJERNES"
   },
   "video_properties": {
     "fps_original": 60.0,
@@ -14,7 +14,7 @@
     "duration_seconds": 5400.0,
     "width": 1920,
     "height": 1080,
-    "codec": "h264"
+    "codec": "h264",                                     "SKAL CODEC FJERNES?"
   },
   "processing": {
     "fps_target": 30.0,
@@ -24,7 +24,7 @@
         "name": "first_half",
         "start_frame": 3600,
         "end_frame": 165600,
-        "start_time_seconds": 60.0,
+        "start_time_seconds": 60.0,                     "start_time_seconds, end_time_seconds KAN MULIGVIS FJERNES, DA DET KAN REKONSTRUERES FRA START_FRAME OG FPS_TARGET"
         "end_time_seconds": 2760.0
       },
       {
