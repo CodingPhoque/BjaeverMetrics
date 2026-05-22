@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bjaevermetrics.local/schemas/io_artifact.schema.json",
+  "title": "BjaeverMetrics IO Intermediate Artifact",
+  "type": "object",
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "video",
+    "video_properties",
+    "processing",
+    "match"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "type": "string",
+      "const": "io"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "video": {
+      "type": "object",
+      "required": ["video_id", "file_name", "path", "file_size_bytes"],
+      "additionalProperties": false,
+      "properties": {
+        "video_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "file_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "file_size_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "checksum": {
+          "type": "object",
+          "required": ["algorithm", "value"],
+          "additionalProperties": false,
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "enum": ["sha256"]
+            },
+            "value": {
+              "type": "string",
+              "pattern": "^[a-fA-F0-9]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "video_properties": {
+      "type": "object",
+      "required": [
+        "fps_original",
+        "frame_count",
+        "duration_seconds",
+        "width",
+        "height",
+        "codec_fourcc"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "fps_original": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "frame_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "codec_fourcc": {
+          "type": ["string", "null"],
+          "minLength": 4,
+          "maxLength": 4
+        }
+      }
+    },
+    "processing": {
+      "type": "object",
+      "required": ["fps_target", "frame_stride", "segments"],
+      "additionalProperties": false,
+      "properties": {
+        "fps_target": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "frame_stride": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "segments": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "start_frame_inclusive",
+              "end_frame_exclusive",
+              "start_time_seconds",
+              "end_time_seconds"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "start_frame_inclusive": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "end_frame_exclusive": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "start_time_seconds": {
+                "type": "number",
+                "minimum": 0
+              },
+              "end_time_seconds": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "match": {
+      "type": "object",
+      "required": ["date", "home_team", "away_team", "venue"],
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "home_team": {
+          "type": "string",
+          "minLength": 1
+        },
+        "away_team": {
+          "type": "string",
+          "minLength": 1
+        },
+        "venue": {
+          "type": ["string", "null"],
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
