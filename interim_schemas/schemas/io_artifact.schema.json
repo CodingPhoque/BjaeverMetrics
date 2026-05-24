@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://bjaevermetrics.local/schemas/io_artifact.schema.json",
+  "$id": "urn:bjaevermetrics:schema:io_artifact:1.0",
   "title": "BjaeverMetrics IO Intermediate Artifact",
   "type": "object",
   "required": [
