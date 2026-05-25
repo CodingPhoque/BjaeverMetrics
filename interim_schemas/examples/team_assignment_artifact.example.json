@@ -1,0 +1,67 @@
+{
+  "artifact_type": "team_assignment",
+  "schema_version": "1.0",
+  "source_tracking_artifact": "data/interim/frem_bjaeverskov_vs_team_x_2026_05_12_tracking.json",
+  "video_id": "frem_bjaeverskov_vs_team_x_2026_05_12",
+  "method": {
+    "name": "kmeans",
+    "color_space": "lab",
+    "min_observations_per_track": 3,
+    "clusters": [
+      {
+        "cluster_id": 0,
+        "center_color": [45.2, 12.1, -34.0],
+        "team": "home"
+      },
+      {
+        "cluster_id": 1,
+        "center_color": [62.8, 48.4, 22.7],
+        "team": "away"
+      }
+    ]
+  },
+  "summary": {
+    "player_tracks_total": 28,
+    "player_tracks_assigned": 24,
+    "player_tracks_unassigned": 4,
+    "player_observations_used": 1840
+  },
+  "assigned_tracks": [
+    {
+      "track_id": 7,
+      "class_name": "player",
+      "team": "home",
+      "cluster_id": 0,
+      "confidence": 0.9167,
+      "observations_used": 84,
+      "cluster_votes": {
+        "0": 77,
+        "1": 7
+      }
+    },
+    {
+      "track_id": 12,
+      "class_name": "player",
+      "team": "away",
+      "cluster_id": 1,
+      "confidence": 0.875,
+      "observations_used": 40,
+      "cluster_votes": {
+        "0": 5,
+        "1": 35
+      }
+    }
+  ],
+  "unassigned_tracks": [
+    {
+      "track_id": 19,
+      "class_name": "player",
+      "reason": "too_few_observations",
+      "observations_used": 2,
+      "cluster_votes": {
+        "0": 1,
+        "1": 1
+      }
+    }
+  ]
+}

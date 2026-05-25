@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bjaevermetrics:schema:team_assignment_artifact:1.0",
+  "title": "BjaeverMetrics Team Assignment Intermediate Artifact",
+  "type": "object",
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "source_tracking_artifact",
+    "video_id",
+    "method",
+    "summary",
+    "assigned_tracks",
+    "unassigned_tracks"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "type": "string",
+      "const": "team_assignment"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source_tracking_artifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "video_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method": {
+      "type": "object",
+      "required": [
+        "name",
+        "color_space",
+        "min_observations_per_track",
+        "clusters"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "const": "kmeans"
+        },
+        "color_space": {
+          "type": "string",
+          "enum": ["lab", "rgb", "hsv"]
+        },
+        "min_observations_per_track": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "clusters": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["cluster_id", "center_color", "team"],
+            "additionalProperties": false,
+            "properties": {
+              "cluster_id": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "center_color": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "number"
+                }
+              },
+              "team": {
+                "type": "string",
+                "enum": ["home", "away"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": [
+        "player_tracks_total",
+        "player_tracks_assigned",
+        "player_tracks_unassigned",
+        "player_observations_used"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "player_tracks_total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "player_tracks_assigned": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "player_tracks_unassigned": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "player_observations_used": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "assigned_tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "track_id",
+          "class_name",
+          "team",
+          "cluster_id",
+          "confidence",
+          "observations_used",
+          "cluster_votes"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "track_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "class_name": {
+            "type": "string",
+            "const": "player"
+          },
+          "team": {
+            "type": "string",
+            "enum": ["home", "away"]
+          },
+          "cluster_id": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "observations_used": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "cluster_votes": {
+            "type": "object",
+            "required": ["0", "1"],
+            "additionalProperties": false,
+            "properties": {
+              "0": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "1": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "unassigned_tracks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "track_id",
+          "class_name",
+          "reason",
+          "observations_used",
+          "cluster_votes"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "track_id": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "class_name": {
+            "type": "string",
+            "const": "player"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "too_few_observations",
+              "low_confidence",
+              "invalid_crops"
+            ]
+          },
+          "observations_used": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cluster_votes": {
+            "type": "object",
+            "required": ["0", "1"],
+            "additionalProperties": false,
+            "properties": {
+              "0": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "1": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
