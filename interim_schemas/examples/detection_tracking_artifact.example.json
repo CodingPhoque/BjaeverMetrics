@@ -1,0 +1,67 @@
+{
+  "artifact_type": "tracking",
+  "schema_version": "1.0",
+  "source_io_artifact": "data/interim/frem_bjaeverskov_vs_team_x_2026_05_12_io.json",
+  "video_id": "frem_bjaeverskov_vs_team_x_2026_05_12",
+  "model": {
+    "name": "YOLO26",
+    "weights_path": "data/models/best.pt",
+    "classes": {
+      "0": "player",
+      "1": "goalkeeper",
+      "2": "ball",
+      "3": "referee"
+    }
+  },
+  "tracker": {
+    "name": "botsort",
+    "config": "botsort.yaml"
+  },
+  "processing": {
+    "fps_processed": 30.0,
+    "frame_stride": 2
+  },
+  "summary": {
+    "frames_processed": 162000,
+    "total_objects": 1070000,
+    "objects_by_class": {
+      "player": 900000,
+      "goalkeeper": 20000,
+      "ball": 120000,
+      "referee": 30000
+    }
+  },
+  "frames": [
+    {
+      "frame_index": 1234,
+      "objects": [
+        {
+          "track_id": 7,
+          "class_id": 0,
+          "class_name": "player",
+          "confidence": 0.87,
+          "bbox_xyxy": [100.5, 220.0, 160.2, 410.8]
+        },
+        {
+          "track_id": 2,
+          "class_id": 2,
+          "class_name": "ball",
+          "confidence": 0.62,
+          "bbox_xyxy": [820.1, 441.3, 834.8, 456.0]
+        }
+      ]
+    },
+    {
+      "frame_index": 1236,
+      "objects": [
+        {
+          "track_id": 7,
+          "class_id": 0,
+          "class_name": "player",
+          "confidence": 0.89,
+          "bbox_xyxy": [102.4, 221.1, 162.0, 411.5]
+        }
+      ]
+    }
+  ]
+}
