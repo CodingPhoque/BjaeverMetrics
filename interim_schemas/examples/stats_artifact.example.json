@@ -1,0 +1,109 @@
+{
+  "artifact_type": "stats",
+  "schema_version": "1.0",
+  "source_io_artifact": "data/interim/frem_bjaeverskov_vs_team_x_2026_05_12_io.json",
+  "source_tracking_artifact": "data/interim/frem_bjaeverskov_vs_team_x_2026_05_12_tracking.json",
+  "source_team_assignment_artifact": "data/interim/frem_bjaeverskov_vs_team_x_2026_05_12_team_assignment.json",
+  "video_id": "frem_bjaeverskov_vs_team_x_2026_05_12",
+  "match": {
+    "date": "2026-05-12",
+    "home_team": "IF Frem Bjaeverskov",
+    "away_team": "Team X",
+    "venue": "Bjaeverskov Stadion"
+  },
+  "stats": {
+    "possession": {
+      "source": "computed",
+      "unit": "percent",
+      "home": 56.0,
+      "away": 44.0,
+      "unknown": 0.0,
+      "by_segment": [
+        {
+          "segment_name": "first_half",
+          "home": 61.0,
+          "away": 39.0,
+          "unknown": 0.0
+        },
+        {
+          "segment_name": "second_half",
+          "home": 51.0,
+          "away": 49.0,
+          "unknown": 0.0
+        }
+      ]
+    },
+    "passes": {
+      "source": "computed",
+      "unit": "count",
+      "home": 214,
+      "away": 176,
+      "unknown": 12,
+      "by_segment": [
+        {
+          "segment_name": "first_half",
+          "home": 118,
+          "away": 82,
+          "unknown": 5
+        },
+        {
+          "segment_name": "second_half",
+          "home": 96,
+          "away": 94,
+          "unknown": 7
+        }
+      ]
+    },
+    "turnovers": {
+      "source": "computed",
+      "unit": "count",
+      "home": 18,
+      "away": 22,
+      "unknown": 5,
+      "by_segment": [
+        {
+          "segment_name": "first_half",
+          "home": 7,
+          "away": 12,
+          "unknown": 2
+        },
+        {
+          "segment_name": "second_half",
+          "home": 11,
+          "away": 10,
+          "unknown": 3
+        }
+      ]
+    },
+    "shots_on_target": {
+      "source": "manual",
+      "unit": "count",
+      "home": 6,
+      "away": 3
+    },
+    "goals": {
+      "source": "manual",
+      "unit": "count",
+      "home": 2,
+      "away": 1
+    }
+  },
+  "quality": {
+    "tracking": {
+      "frames_processed": 162000,
+      "total_objects": 1070000,
+      "objects_by_class": {
+        "player": 900000,
+        "goalkeeper": 20000,
+        "ball": 120000,
+        "referee": 30000
+      }
+    },
+    "team_assignment": {
+      "player_tracks_total": 28,
+      "player_tracks_assigned": 24,
+      "player_tracks_unassigned": 4,
+      "player_observations_used": 1840
+    }
+  }
+}

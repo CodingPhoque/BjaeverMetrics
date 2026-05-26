@@ -1,0 +1,297 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:bjaevermetrics:schema:stats_artifact:1.0",
+  "title": "BjaeverMetrics Stats Artifact",
+  "type": "object",
+  "required": [
+    "artifact_type",
+    "schema_version",
+    "source_io_artifact",
+    "source_tracking_artifact",
+    "source_team_assignment_artifact",
+    "video_id",
+    "match",
+    "stats",
+    "quality"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "artifact_type": {
+      "type": "string",
+      "const": "stats"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "source_io_artifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_tracking_artifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_team_assignment_artifact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "video_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "match": {
+      "type": "object",
+      "required": ["date", "home_team", "away_team", "venue"],
+      "additionalProperties": false,
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "home_team": {
+          "type": "string",
+          "minLength": 1
+        },
+        "away_team": {
+          "type": "string",
+          "minLength": 1
+        },
+        "venue": {
+          "type": ["string", "null"],
+          "minLength": 1
+        }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "required": [
+        "possession",
+        "passes",
+        "turnovers",
+        "shots_on_target",
+        "goals"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "possession": {
+          "$ref": "#/$defs/computed_percent_stat"
+        },
+        "passes": {
+          "$ref": "#/$defs/computed_count_stat"
+        },
+        "turnovers": {
+          "$ref": "#/$defs/computed_count_stat"
+        },
+        "shots_on_target": {
+          "$ref": "#/$defs/manual_count_stat"
+        },
+        "goals": {
+          "$ref": "#/$defs/manual_count_stat"
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "required": ["tracking", "team_assignment"],
+      "additionalProperties": false,
+      "properties": {
+        "tracking": {
+          "type": "object",
+          "required": ["frames_processed", "total_objects", "objects_by_class"],
+          "additionalProperties": false,
+          "properties": {
+            "frames_processed": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "total_objects": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "objects_by_class": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        },
+        "team_assignment": {
+          "type": "object",
+          "required": [
+            "player_tracks_total",
+            "player_tracks_assigned",
+            "player_tracks_unassigned",
+            "player_observations_used"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "player_tracks_total": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "player_tracks_assigned": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "player_tracks_unassigned": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "player_observations_used": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "computed_percent_stat": {
+      "type": "object",
+      "required": ["source", "unit", "home", "away", "unknown", "by_segment"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "const": "computed"
+        },
+        "unit": {
+          "type": "string",
+          "const": "percent"
+        },
+        "home": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "away": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "unknown": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "by_segment": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/percent_segment"
+          }
+        }
+      }
+    },
+    "computed_count_stat": {
+      "type": "object",
+      "required": ["source", "unit", "home", "away", "unknown", "by_segment"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "const": "computed"
+        },
+        "unit": {
+          "type": "string",
+          "const": "count"
+        },
+        "home": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "away": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unknown": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by_segment": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/count_segment"
+          }
+        }
+      }
+    },
+    "manual_count_stat": {
+      "type": "object",
+      "required": ["source", "unit", "home", "away"],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "const": "manual"
+        },
+        "unit": {
+          "type": "string",
+          "const": "count"
+        },
+        "home": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "away": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "percent_segment": {
+      "type": "object",
+      "required": ["segment_name", "home", "away", "unknown"],
+      "additionalProperties": false,
+      "properties": {
+        "segment_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "home": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "away": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "unknown": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "count_segment": {
+      "type": "object",
+      "required": ["segment_name", "home", "away", "unknown"],
+      "additionalProperties": false,
+      "properties": {
+        "segment_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "home": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "away": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unknown": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}
