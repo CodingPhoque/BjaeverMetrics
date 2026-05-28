@@ -6,6 +6,7 @@ scikit-learn>=1.4
 
 # Config
 pyyaml>=6.0
+jsonschema>=4.0
 
 # CLI / UX
 tqdm>=4.66
