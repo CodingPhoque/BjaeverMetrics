@@ -5,6 +5,7 @@ import re
 from datetime import date as Date
 from pathlib import Path
 from typing import Any
+
 from jsonschema import Draft202012Validator
 from jsonschema.exceptions import ValidationError
 

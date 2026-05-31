@@ -28,8 +28,9 @@ class VideoConfig:
 @dataclass
 class TeamClassificationConfig:
     enabled: bool
-    fit_frames: int
     min_fit_samples: int
+    min_observations_per_track: int
+    min_assignment_confidence: float
     color_space: str
     jersey_crop: dict[str, float]
     grass_filter: dict
@@ -47,6 +48,30 @@ class TeamClassificationConfig:
         )
 
 @dataclass
+class StatsPossessionConfig:
+    max_possession_distance_ratio: float
+    min_possession_confirm_seconds: float
+    max_ball_missing_seconds: float
+    use_ball_kalman_filter: bool
+    max_ball_interpolation_seconds: float
+
+@dataclass
+class StatsPassesConfig:
+    min_control_seconds: float
+    max_pass_gap_seconds: float
+
+@dataclass
+class StatsTurnoversConfig:
+    min_control_seconds: float
+    max_turnover_gap_seconds: float
+
+@dataclass
+class StatsConfig:
+    possession: StatsPossessionConfig
+    passes: StatsPassesConfig
+    turnovers: StatsTurnoversConfig
+
+@dataclass
 class DebugConfig:
     save_detection_video: bool
     save_tracking_video: bool
@@ -59,20 +84,26 @@ class Config:
     detection: DetectionConfig
     team_classification: TeamClassificationConfig
     tracking: TrackingConfig
+    stats: StatsConfig
     debug: DebugConfig
-    paths: dict[str, str] 
+    paths: dict[str, str]
     output: dict
     logging: dict
 
     @classmethod
     def load(cls, path: str | Path) -> "Config":
-        with open(path, "r") as f:
+        with open(path) as f:
             raw = yaml.safe_load(f)
         return cls(
             video=VideoConfig(**raw["video"]),
             detection=DetectionConfig(**raw["detection"]),
             team_classification=TeamClassificationConfig(**raw["team_classification"]),
             tracking=TrackingConfig(**raw["tracking"]),
+            stats=StatsConfig(
+                possession=StatsPossessionConfig(**raw["stats"]["possession"]),
+                passes=StatsPassesConfig(**raw["stats"]["passes"]),
+                turnovers=StatsTurnoversConfig(**raw["stats"]["turnovers"]),
+            ),
             debug=DebugConfig(**raw["debug"]),
             paths=raw["paths"],
             output=raw["output"],

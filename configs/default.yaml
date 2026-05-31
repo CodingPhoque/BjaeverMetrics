@@ -10,8 +10,8 @@ paths:
 
 detection:
   model_file: "yolo26mtrained.pt"      # your trained local .pt file, ensure precise filename
-  device: "cuda"                # "cuda" | "cpu"
-  image_size: 1280
+  device: "cpu"                 # "cuda" | "cpu"
+  image_size: 960
   confidence_threshold:
     ball: 0.25
     player: 0.50
@@ -20,8 +20,9 @@ detection:
 
 team_classification:
   enabled: true
-  fit_frames: 200               # sampled frames used to learn stable team colors
   min_fit_samples: 50           # minimum valid player jersey crops before fitting
+  min_observations_per_track: 3  # minimum valid player observations before assigning a track
+  min_assignment_confidence: 0.60 # minimum majority-vote share before assigning a track
   color_space: "lab"            
   jersey_crop:
     x_margin_ratio: 0.20        # trims bbox sides to reduce arms/background
@@ -32,8 +33,22 @@ team_classification:
     hsv_lower: [35, 40, 40]     # tune if field lighting makes grass leak through
     hsv_upper: [90, 255, 255]   # tune together with hsv_lower
 
+stats:
+  possession:
+    max_possession_distance_ratio: 0.55
+    min_possession_confirm_seconds: 0.30
+    max_ball_missing_seconds: 0.50
+    use_ball_kalman_filter: true
+    max_ball_interpolation_seconds: 1.00
+  passes:
+    min_control_seconds: 0.30
+    max_pass_gap_seconds: 2.00
+  turnovers:
+    min_control_seconds: 0.30
+    max_turnover_gap_seconds: 2.00
+
 tracking:
-  algorithm: "bytetrack"        # "bytetrack" | "botsort"
+  algorithm: "botsort"          # "bytetrack" | "botsort"
   track_buffer: 30              # frames to keep "lost" track alive
   match_threshold: 0.8
 

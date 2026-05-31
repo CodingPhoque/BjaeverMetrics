@@ -7,6 +7,17 @@
     "name": "kmeans",
     "color_space": "lab",
     "min_observations_per_track": 3,
+    "min_assignment_confidence": 0.6,
+    "team_reference_colors": {
+      "home": {
+        "hex": "#1f5fbf",
+        "color_value": [106.0, 144.0, 72.0]
+      },
+      "away": {
+        "hex": "#e23b2e",
+        "color_value": [131.0, 191.0, 174.0]
+      }
+    },
     "clusters": [
       {
         "cluster_id": 0,

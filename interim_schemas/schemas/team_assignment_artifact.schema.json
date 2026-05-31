@@ -37,6 +37,8 @@
         "name",
         "color_space",
         "min_observations_per_track",
+        "min_assignment_confidence",
+        "team_reference_colors",
         "clusters"
       ],
       "additionalProperties": false,
@@ -52,6 +54,24 @@
         "min_observations_per_track": {
           "type": "integer",
           "minimum": 1
+        },
+        "min_assignment_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "team_reference_colors": {
+          "type": "object",
+          "required": ["home", "away"],
+          "additionalProperties": false,
+          "properties": {
+            "home": {
+              "$ref": "#/$defs/team_reference_color"
+            },
+            "away": {
+              "$ref": "#/$defs/team_reference_color"
+            }
+          }
         },
         "clusters": {
           "type": "array",
@@ -218,6 +238,27 @@
                 "minimum": 0
               }
             }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "team_reference_color": {
+      "type": "object",
+      "required": ["hex", "color_value"],
+      "additionalProperties": false,
+      "properties": {
+        "hex": {
+          "type": "string",
+          "pattern": "^#[a-fA-F0-9]{6}$"
+        },
+        "color_value": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
           }
         }
       }
