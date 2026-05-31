@@ -11,6 +11,23 @@
     "away_team": "Team X",
     "venue": "Bjaeverskov Stadion"
   },
+  "method": {
+    "possession": {
+      "max_possession_distance_ratio": 0.55,
+      "min_possession_confirm_seconds": 0.3,
+      "max_ball_missing_seconds": 0.5,
+      "use_ball_kalman_filter": true,
+      "max_ball_interpolation_seconds": 1.0
+    },
+    "passes": {
+      "min_control_seconds": 0.3,
+      "max_pass_gap_seconds": 2.0
+    },
+    "turnovers": {
+      "min_control_seconds": 0.3,
+      "max_turnover_gap_seconds": 2.0
+    }
+  },
   "stats": {
     "possession": {
       "source": "computed",
@@ -104,6 +121,13 @@
       "player_tracks_assigned": 24,
       "player_tracks_unassigned": 4,
       "player_observations_used": 1840
+    },
+    "possession": {
+      "frames_with_ball": 154000,
+      "frames_with_detected_ball": 120000,
+      "frames_with_estimated_ball": 34000,
+      "frames_with_possession": 139500,
+      "frames_unknown_possession": 22500
     }
   }
 }

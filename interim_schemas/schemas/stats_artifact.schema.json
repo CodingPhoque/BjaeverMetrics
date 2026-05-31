@@ -11,6 +11,7 @@
     "source_team_assignment_artifact",
     "video_id",
     "match",
+    "method",
     "stats",
     "quality"
   ],
@@ -63,6 +64,75 @@
         }
       }
     },
+    "method": {
+      "type": "object",
+      "required": ["possession", "passes", "turnovers"],
+      "additionalProperties": false,
+      "properties": {
+        "possession": {
+          "type": "object",
+          "required": [
+            "max_possession_distance_ratio",
+            "min_possession_confirm_seconds",
+            "max_ball_missing_seconds",
+            "use_ball_kalman_filter",
+            "max_ball_interpolation_seconds"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "max_possession_distance_ratio": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "min_possession_confirm_seconds": {
+              "type": "number",
+              "minimum": 0
+            },
+            "max_ball_missing_seconds": {
+              "type": "number",
+              "minimum": 0
+            },
+            "use_ball_kalman_filter": {
+              "type": "boolean"
+            },
+            "max_ball_interpolation_seconds": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "passes": {
+          "type": "object",
+          "required": ["min_control_seconds", "max_pass_gap_seconds"],
+          "additionalProperties": false,
+          "properties": {
+            "min_control_seconds": {
+              "type": "number",
+              "minimum": 0
+            },
+            "max_pass_gap_seconds": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "turnovers": {
+          "type": "object",
+          "required": ["min_control_seconds", "max_turnover_gap_seconds"],
+          "additionalProperties": false,
+          "properties": {
+            "min_control_seconds": {
+              "type": "number",
+              "minimum": 0
+            },
+            "max_turnover_gap_seconds": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
     "stats": {
       "type": "object",
       "required": [
@@ -93,7 +163,7 @@
     },
     "quality": {
       "type": "object",
-      "required": ["tracking", "team_assignment"],
+      "required": ["tracking", "team_assignment", "possession"],
       "additionalProperties": false,
       "properties": {
         "tracking": {
@@ -141,6 +211,39 @@
               "minimum": 0
             },
             "player_observations_used": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "possession": {
+          "type": "object",
+          "required": [
+            "frames_with_ball",
+            "frames_with_detected_ball",
+            "frames_with_estimated_ball",
+            "frames_with_possession",
+            "frames_unknown_possession"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "frames_with_ball": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "frames_with_detected_ball": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "frames_with_estimated_ball": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "frames_with_possession": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "frames_unknown_possession": {
               "type": "integer",
               "minimum": 0
             }
