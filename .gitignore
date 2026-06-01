@@ -28,6 +28,7 @@ htmlcov/
 # --- Project data (do NOT commit videos or generated match output) ---
 data/*
 !data/.gitkeep
+database/*.sqlite
 
 matches/*
 !matches/.gitkeep

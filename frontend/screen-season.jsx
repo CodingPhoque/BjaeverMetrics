@@ -101,6 +101,32 @@ function SeasonScreen({ matches, onNew, onOpen, layout = "kombineret" }) {
     return { id: m.id, opp: m.awayTeam, short: `${da}/${mo}`, poss: m.stats.possession.home, passes: m.stats.passes.home, date: m.date, raw: m };
   }), [matches]);
 
+  if (series.length === 0) {
+    return (
+      <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 28px 80px" }}>
+        <header style={{ padding: "40px 0 26px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16 }}>
+          <div>
+            <div style={{ fontSize: 12.5, fontWeight: 700, color: "var(--accent)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Saeson 2026</div>
+            <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 700, letterSpacing: "-0.02em" }}>Saesonoversigt</h1>
+            <p style={{ color: "var(--text-dim)", fontSize: 15, marginTop: 8 }}>Ingen kampe er gemt endnu.</p>
+          </div>
+          <Button icon="plus" onClick={onNew}>Analyser ny kamp</Button>
+        </header>
+        <Card>
+          <div style={{ display: "grid", placeItems: "center", minHeight: 220, textAlign: "center" }}>
+            <div>
+              <div style={{ width: 48, height: 48, borderRadius: 12, background: "var(--accent-soft)", color: "var(--accent)", display: "grid", placeItems: "center", margin: "0 auto 14px" }}>
+                <Icon name="video" size={24} />
+              </div>
+              <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700 }}>Start med forste analyse</div>
+              <div style={{ color: "var(--text-dim)", fontSize: 14, marginTop: 6 }}>Upload en kampvideo for at bygge saesonen op.</div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
   const avgPoss = Math.round(series.reduce((a, b) => a + b.poss, 0) / series.length);
   const avgPass = Math.round(series.reduce((a, b) => a + b.passes, 0) / series.length);
   const last = series[series.length - 1], prev = series[series.length - 2];

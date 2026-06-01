@@ -3,6 +3,26 @@ BjaeverMetrics is an advanced football analysis program designed for IF Frem Bj√
 
 Run pip install -r requirement.txt
 
+## Local web app
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Start the local API and frontend:
+
+```bash
+uvicorn bjaevermetrics_app:app --reload --host 127.0.0.1 --port 8000
+```
+
+Open http://127.0.0.1:8000 in the browser.
+
+The local app serves `frontend/`, receives video uploads at `POST /api/analyze`,
+runs the pipeline on the local machine, stores results in SQLite, and shows saved
+matches through `GET /api/matches`.
+
 
 
 

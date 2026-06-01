@@ -23,7 +23,7 @@ function ProcessingScreen({ draft, onDone }) {
       setProgress(p);
       setActive(Math.min(stages.length - 1, Math.floor(p * stages.length)));
       if (p < 1) raf = requestAnimationFrame(tick);
-      else setTimeout(onDone, 550);
+      else if (onDone) setTimeout(onDone, 550);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);

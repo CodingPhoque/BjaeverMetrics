@@ -119,8 +119,23 @@ function UploadScreen({ draft, setDraft, onSubmit }) {
 
   const loadFile = (file) => {
     if (!file || !file.type.startsWith("video")) return;
+    if (d.videoUrl) URL.revokeObjectURL(d.videoUrl);
     const url = URL.createObjectURL(file);
-    set({ videoFile: file.name, videoUrl: url });
+    set({ videoFile: file.name, videoBlob: file, videoUrl: url });
+  };
+
+  const clearVideo = () => {
+    if (d.videoUrl) URL.revokeObjectURL(d.videoUrl);
+    if (fileRef.current) fileRef.current.value = "";
+    setPlaying(false);
+    setPlayhead(0);
+    set({
+      videoFile: null,
+      videoBlob: null,
+      videoUrl: null,
+      duration: 0,
+      segments: { h1s: 0, h1e: 0, h2s: 0, h2e: 0 },
+    });
   };
 
   const onLoadedMeta = () => {
@@ -149,9 +164,9 @@ function UploadScreen({ draft, setDraft, onSubmit }) {
     if (v.paused) { v.play(); setPlaying(true); } else { v.pause(); setPlaying(false); }
   };
 
-  const useDemoTimeline = () => set({ videoFile: "demo-tidslinje", videoUrl: null, duration: 5700, segments: { h1s: 60, h1e: 2820, h2s: 3000, h2e: 5640 } });
+  const useDemoTimeline = () => set({ videoFile: "demo-tidslinje", videoBlob: null, videoUrl: null, duration: 5700, segments: { h1s: 60, h1e: 2820, h2s: 3000, h2e: 5640 } });
 
-  const valid = d.homeTeam && d.awayTeam && d.homeColor && d.awayColor && d.date && d.duration > 0 && d.homeColor !== d.awayColor;
+  const valid = d.videoBlob && d.homeTeam && d.awayTeam && d.homeColor && d.awayColor && d.date && d.duration > 0 && d.homeColor !== d.awayColor;
 
   return (
     <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 28px 120px" }}>
@@ -224,8 +239,7 @@ function UploadScreen({ draft, setDraft, onSubmit }) {
                   <span style={{ fontWeight: 600, color: "var(--text)" }}>{d.videoFile}</span>
                   <span>· {fmtClock(d.duration)}</span>
                 </div>
-                <button onClick={() => set({ videoFile: null, videoUrl: null, duration: 0 })}
-                  style={{ fontSize: 13, fontWeight: 600, color: "var(--text-dim)", background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-body)" }}>Skift video</button>
+                <Button variant="ghost" size="sm" icon="chevronLeft" onClick={clearVideo}>Fjern video</Button>
               </div>
 
               <div style={{ marginTop: 18, paddingTop: 18, borderTop: "1px solid var(--border)" }}>
@@ -276,6 +290,33 @@ function UploadScreen({ draft, setDraft, onSubmit }) {
             <Field label="Spillested" optional hint="F.eks. Bjæverskov Stadion">
               <TextInput value={d.venue} onChange={(v) => set({ venue: v })} placeholder="Spillested (venue)" />
             </Field>
+          </Card>
+        </div>
+      </section>
+
+      {/* Step 4: manual stats */}
+      <section style={{ marginTop: 36 }}>
+        <StepLabel n="4" title="Manuelle kampdata" />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+          <Card label="Maal" hint="bruges i stats-artifactet">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <Field label="Hjemme">
+                <TextInput type="number" value={d.goalsHome} onChange={(v) => set({ goalsHome: Math.max(0, Number(v || 0)) })} />
+              </Field>
+              <Field label="Ude">
+                <TextInput type="number" value={d.goalsAway} onChange={(v) => set({ goalsAway: Math.max(0, Number(v || 0)) })} />
+              </Field>
+            </div>
+          </Card>
+          <Card label="Skud paa maal" hint="kan rettes manuelt">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <Field label="Hjemme">
+                <TextInput type="number" value={d.shotsOnTargetHome} onChange={(v) => set({ shotsOnTargetHome: Math.max(0, Number(v || 0)) })} />
+              </Field>
+              <Field label="Ude">
+                <TextInput type="number" value={d.shotsOnTargetAway} onChange={(v) => set({ shotsOnTargetAway: Math.max(0, Number(v || 0)) })} />
+              </Field>
+            </div>
           </Card>
         </div>
       </section>

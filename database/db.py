@@ -14,6 +14,18 @@ EXAMPLE_ARTIFACT_PATH = (
 def create_tables(connection):
     schema = SCHEMA_PATH.read_text(encoding="utf-8")
     connection.executescript(schema)
+    ensure_columns(connection)
+
+
+def ensure_columns(connection):
+    columns = {
+        row[1]
+        for row in connection.execute("PRAGMA table_info(matches)").fetchall()
+    }
+    if "home_color" not in columns:
+        connection.execute("ALTER TABLE matches ADD COLUMN home_color TEXT")
+    if "away_color" not in columns:
+        connection.execute("ALTER TABLE matches ADD COLUMN away_color TEXT")
 
 
 def load_json(path):
@@ -32,7 +44,7 @@ def resolve_project_path(path):
     return PROJECT_ROOT / path
 
 
-def save_stats_artifact(connection, artifact):
+def save_stats_artifact(connection, artifact, home_color=None, away_color=None):
     match = artifact["match"]
 
     cursor = connection.execute(
@@ -42,15 +54,19 @@ def save_stats_artifact(connection, artifact):
             match_date,
             home_team,
             away_team,
+            home_color,
+            away_color,
             venue
         )
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         """,
         (
             artifact["video_id"],
             match["date"],
             match["home_team"],
             match["away_team"],
+            home_color,
+            away_color,
             match["venue"],
         ),
     )
@@ -64,6 +80,98 @@ def save_stats_artifact(connection, artifact):
             save_stat_row(connection, match_id, metric_name, segment["segment_name"], metric, segment)
 
     return match_id
+
+
+def video_id_exists(connection, video_id):
+    row = connection.execute(
+        "SELECT 1 FROM matches WHERE video_id = ?",
+        (video_id,),
+    ).fetchone()
+    return row is not None
+
+
+def load_matches(connection):
+    rows = connection.execute(
+        """
+        SELECT id, video_id, match_date, home_team, away_team, home_color, away_color, venue
+        FROM matches
+        ORDER BY match_date, id
+        """
+    ).fetchall()
+    return [load_match(connection, row[0], row) for row in rows]
+
+
+def load_match(connection, match_id, match_row=None):
+    if match_row is None:
+        match_row = connection.execute(
+            """
+            SELECT id, video_id, match_date, home_team, away_team, home_color, away_color, venue
+            FROM matches
+            WHERE id = ?
+            """,
+            (match_id,),
+        ).fetchone()
+
+    if match_row is None:
+        return None
+
+    (
+        db_id,
+        video_id,
+        match_date,
+        home_team,
+        away_team,
+        home_color,
+        away_color,
+        venue,
+    ) = match_row
+
+    stats = {}
+    stat_rows = connection.execute(
+        """
+        SELECT metric_name, segment_name, home_value, away_value, unknown_value
+        FROM match_stats
+        WHERE match_id = ?
+        ORDER BY metric_name, segment_name
+        """,
+        (db_id,),
+    ).fetchall()
+
+    for metric_name, segment_name, home, away, unknown in stat_rows:
+        metric = stats.setdefault(metric_name, {})
+        values = {
+            "home": _clean_number(home),
+            "away": _clean_number(away),
+        }
+        if unknown is not None:
+            values["unknown"] = _clean_number(unknown)
+
+        if segment_name == "total":
+            metric.update(values)
+        elif segment_name == "first_half":
+            metric["h1"] = values
+        elif segment_name == "second_half":
+            metric["h2"] = values
+        else:
+            metric[segment_name] = values
+
+    return {
+        "id": str(db_id),
+        "videoId": video_id,
+        "date": match_date,
+        "homeTeam": home_team,
+        "awayTeam": away_team,
+        "homeColor": home_color or "#d62839",
+        "awayColor": away_color or "#1d6fe0",
+        "venue": venue or "",
+        "stats": stats,
+    }
+
+
+def _clean_number(value):
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    return value
 
 
 def save_stat_row(connection, match_id, metric_name, segment_name, metric, segment=None):

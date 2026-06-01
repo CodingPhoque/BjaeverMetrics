@@ -6,6 +6,8 @@ CREATE TABLE IF NOT EXISTS matches (
     match_date TEXT NOT NULL,
     home_team TEXT NOT NULL,
     away_team TEXT NOT NULL,
+    home_color TEXT,
+    away_color TEXT,
     venue TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );

@@ -11,3 +11,8 @@ jsonschema>=4.0
 
 # CLI / UX
 tqdm>=4.66
+
+# Local web UI
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9

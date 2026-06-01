@@ -1,4 +1,4 @@
-// app.jsx — root: state machine, navigation, tweaks wiring.
+// app.jsx - root: state machine, navigation, tweaks wiring.
 const { useState: useStateA, useEffect: useEffectA, useRef: useRefA } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
@@ -10,40 +10,51 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 
 function emptyDraft() {
   return {
-    videoFile: null, videoUrl: null, duration: 0,
+    videoFile: null, videoBlob: null, videoUrl: null, duration: 0,
     segments: { h1s: 0, h1e: 0, h2s: 0, h2e: 0 },
-    homeTeam: "IF Frem Bjæverskov", awayTeam: "",
+    homeTeam: "IF Frem Bjaeverskov", awayTeam: "",
     homeColor: "#d62839", awayColor: "#1d6fe0",
     date: todayISO(), venue: "",
+    goalsHome: 0, goalsAway: 0,
+    shotsOnTargetHome: 0, shotsOnTargetAway: 0,
   };
 }
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const rootRef = useRefA(null);
-  const [screen, setScreen] = useStateA("season"); // start on season so there's substance; "upload"|"processing"|"match"|"season"
+  const [screen, setScreen] = useStateA("season");
   const [draft, setDraft] = useStateA(emptyDraft);
-  const [matches, setMatches] = useStateA(() => BMApi.loadSeason());
+  const [matches, setMatches] = useStateA([]);
   const [current, setCurrent] = useStateA(null);
   const [isNew, setIsNew] = useStateA(false);
 
   useEffectA(() => { applyTheme(rootRef.current, t.theme, t.density); }, [t.theme, t.density]);
-  useEffectA(() => { BMApi.saveMatch(matches); }, [matches]);
+  useEffectA(() => {
+    BMApi.loadSeason()
+      .then(setMatches)
+      .catch((error) => {
+        console.error(error);
+        setMatches([]);
+      });
+  }, []);
 
   const startUpload = () => { setDraft(emptyDraft()); setScreen("upload"); };
 
-  const submitDraft = (d) => { setScreen("processing"); };
-
-  const finishProcessing = () => {
-    const { stats } = BMApi.analyzeMatch(draft);
-    const match = {
-      id: `m-${Date.now()}`,
-      date: draft.date, homeTeam: draft.homeTeam, awayTeam: draft.awayTeam || "Modstander",
-      venue: draft.venue, homeColor: draft.homeColor, awayColor: draft.awayColor,
-      stats,
-    };
-    setMatches((prev) => [...prev, match].sort((a, b) => a.date.localeCompare(b.date)));
-    setCurrent(match); setIsNew(true); setScreen("match");
+  const submitDraft = async (d) => {
+    setDraft(d);
+    setScreen("processing");
+    try {
+      const { match } = await BMApi.analyzeMatch(d);
+      const freshMatches = await BMApi.loadSeason();
+      setMatches(freshMatches);
+      setCurrent(match);
+      setIsNew(true);
+      setScreen("match");
+    } catch (error) {
+      alert(error.message || "Analysen fejlede.");
+      setScreen("upload");
+    }
   };
 
   const openMatch = (m) => { setCurrent(m); setIsNew(false); setScreen("match"); };
@@ -53,7 +64,7 @@ function App() {
       <TopBar screen={screen} onSeason={() => setScreen("season")} onUpload={startUpload} />
       <main>
         {screen === "upload" && <UploadScreen draft={draft} setDraft={setDraft} onSubmit={submitDraft} />}
-        {screen === "processing" && <ProcessingScreen draft={draft} onDone={finishProcessing} />}
+        {screen === "processing" && <ProcessingScreen draft={draft} />}
         {screen === "match" && current && <MatchStatsScreen match={current} isNew={isNew} colorMode={t.matchColors} onSeason={() => setScreen("season")} />}
         {screen === "season" && <SeasonScreen matches={matches} layout={t.seasonLayout} onNew={startUpload} onOpen={openMatch} />}
       </main>
@@ -67,7 +78,7 @@ function App() {
         <TweakRadio label="Densitet" value={t.density}
           options={[{ value: "luftig", label: "Luftig" }, { value: "kompakt", label: "Kompakt" }]}
           onChange={(v) => setTweak("density", v)} />
-        <TweakSection label="Sæsonoversigt" />
+        <TweakSection label="Saesonoversigt" />
         <TweakRadio label="Layout" value={t.seasonLayout}
           options={[{ value: "kombineret", label: "Kombineret" }, { value: "graf", label: "Graf" }, { value: "tabel", label: "Tabel" }]}
           onChange={(v) => setTweak("seasonLayout", v)} />
@@ -75,14 +86,13 @@ function App() {
         <TweakRadio label="Farver" value={t.matchColors}
           options={[{ value: "hold", label: "Holdfarver" }, { value: "standard", label: "Standard" }]}
           onChange={(v) => setTweak("matchColors", v)} />
-        <TweakButton label="Nulstil til demo-sæson" onClick={() => setMatches(BMApi.resetSeason())} />
       </TweaksPanel>
     </div>
   );
 }
 
 function TopBar({ screen, onSeason, onUpload }) {
-  const tab = (label, key, active, onClick) => (
+  const tab = (label, active, onClick) => (
     <button onClick={onClick} style={{
       padding: "8px 14px", borderRadius: "var(--radius-sm)", border: "none", cursor: "pointer", fontSize: 14, fontWeight: 600, fontFamily: "var(--font-body)",
       background: active ? "var(--surface-2)" : "transparent", color: active ? "var(--text)" : "var(--text-dim)",
@@ -93,8 +103,8 @@ function TopBar({ screen, onSeason, onUpload }) {
       <div style={{ maxWidth: 1060, margin: "0 auto", padding: "14px 28px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Logo />
         <nav style={{ display: "flex", alignItems: "center", gap: 4 }}>
-          {tab("Sæson", "season", screen === "season", onSeason)}
-          {tab("Ny analyse", "upload", screen === "upload" || screen === "processing", onUpload)}
+          {tab("Saeson", screen === "season", onSeason)}
+          {tab("Ny analyse", screen === "upload" || screen === "processing", onUpload)}
         </nav>
       </div>
     </div>
