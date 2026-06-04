@@ -298,7 +298,7 @@ function UploadScreen({ draft, setDraft, onSubmit }) {
       <section style={{ marginTop: 36 }}>
         <StepLabel n="4" title="Manuelle kampdata" />
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
-          <Card label="Maal" hint="bruges i stats-artifactet">
+          <Card label="Mål" hint="bruges i stats-artifactet">
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               <Field label="Hjemme">
                 <TextInput type="number" value={d.goalsHome} onChange={(v) => set({ goalsHome: Math.max(0, Number(v || 0)) })} />
@@ -308,7 +308,7 @@ function UploadScreen({ draft, setDraft, onSubmit }) {
               </Field>
             </div>
           </Card>
-          <Card label="Skud paa maal" hint="kan rettes manuelt">
+          <Card label="Skud på mål" hint="kan rettes manuelt">
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               <Field label="Hjemme">
                 <TextInput type="number" value={d.shotsOnTargetHome} onChange={(v) => set({ shotsOnTargetHome: Math.max(0, Number(v || 0)) })} />
