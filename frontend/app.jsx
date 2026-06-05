@@ -78,7 +78,7 @@ function App() {
         <TweakRadio label="Densitet" value={t.density}
           options={[{ value: "luftig", label: "Luftig" }, { value: "kompakt", label: "Kompakt" }]}
           onChange={(v) => setTweak("density", v)} />
-        <TweakSection label="Saesonoversigt" />
+        <TweakSection label="Sæsonoversigt" />
         <TweakRadio label="Layout" value={t.seasonLayout}
           options={[{ value: "kombineret", label: "Kombineret" }, { value: "graf", label: "Graf" }, { value: "tabel", label: "Tabel" }]}
           onChange={(v) => setTweak("seasonLayout", v)} />
@@ -103,7 +103,7 @@ function TopBar({ screen, onSeason, onUpload }) {
       <div style={{ maxWidth: 1060, margin: "0 auto", padding: "14px 28px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <Logo />
         <nav style={{ display: "flex", alignItems: "center", gap: 4 }}>
-          {tab("Saeson", screen === "season", onSeason)}
+          {tab("Sæson", screen === "season", onSeason)}
           {tab("Ny analyse", screen === "upload" || screen === "processing", onUpload)}
         </nav>
       </div>

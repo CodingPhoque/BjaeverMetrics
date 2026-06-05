@@ -106,8 +106,8 @@ function SeasonScreen({ matches, onNew, onOpen, layout = "kombineret" }) {
       <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 28px 80px" }}>
         <header style={{ padding: "40px 0 26px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 16 }}>
           <div>
-            <div style={{ fontSize: 12.5, fontWeight: 700, color: "var(--accent)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Saeson 2026</div>
-            <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 700, letterSpacing: "-0.02em" }}>Saesonoversigt</h1>
+            <div style={{ fontSize: 12.5, fontWeight: 700, color: "var(--accent)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Sæson 2026</div>
+            <h1 style={{ margin: 0, fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 700, letterSpacing: "-0.02em" }}>Sæsonoversigt</h1>
             <p style={{ color: "var(--text-dim)", fontSize: 15, marginTop: 8 }}>Ingen kampe er gemt endnu.</p>
           </div>
           <Button icon="plus" onClick={onNew}>Analyser ny kamp</Button>
@@ -118,8 +118,8 @@ function SeasonScreen({ matches, onNew, onOpen, layout = "kombineret" }) {
               <div style={{ width: 48, height: 48, borderRadius: 12, background: "var(--accent-soft)", color: "var(--accent)", display: "grid", placeItems: "center", margin: "0 auto 14px" }}>
                 <Icon name="video" size={24} />
               </div>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700 }}>Start med forste analyse</div>
-              <div style={{ color: "var(--text-dim)", fontSize: 14, marginTop: 6 }}>Upload en kampvideo for at bygge saesonen op.</div>
+              <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700 }}>Start med første analyse</div>
+              <div style={{ color: "var(--text-dim)", fontSize: 14, marginTop: 6 }}>Upload en kampvideo for at bygge sæsonen op.</div>
             </div>
           </div>
         </Card>
