@@ -36,7 +36,7 @@ const BMApi = {
     return payload;
   },
 
-  saveMatch() {},
+  //saveMatch() {},
 
   async resetSeason() {
     return this.loadSeason();
