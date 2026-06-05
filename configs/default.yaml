@@ -10,8 +10,8 @@ paths:
 
 detection:
   model_file: "yolo26mtrained.pt"      # your trained local .pt file, ensure precise filename
-  device: "cpu"                 # "cuda" | "cpu"
-  image_size: 960
+  device: "cuda"                 # "cuda" | "cpu"
+  image_size: 1280
   confidence_threshold:
     ball: 0.25
     player: 0.50
