@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Afleveringer | Validering</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Stats validation</p>
+        <h1>Afleveringer</h1>
+      </div>
+      <button id="clearAllButton" class="danger-button" type="button">Ryd manuelle</button>
+    </header>
+
+    <section class="workspace">
+      <div class="video-column">
+        <section class="tool-panel video-panel" aria-label="Video">
+          <div class="file-row">
+            <label class="primary-button" for="videoFileInput">Vælg video</label>
+            <input id="videoFileInput" type="file" accept="video/*" />
+            <span id="videoFileName" class="file-name">Ingen video valgt</span>
+          </div>
+          <video id="matchVideo" controls playsinline preload="metadata"></video>
+          <div class="video-meta" aria-live="polite">
+            <span><strong>Tid:</strong> <output id="currentTimeText">00:00.0</output></span>
+            <span><strong>Varighed:</strong> <output id="durationText">00:00.0</output></span>
+          </div>
+        </section>
+
+        <section class="tool-panel events-panel">
+          <div class="section-heading">
+            <h2>Manuelle afleveringer</h2>
+            <button id="undoButton" type="button" class="secondary-button">Fortryd</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tidspunkt</th>
+                  <th>Hold</th>
+                  <th class="action-column">Slet</th>
+                </tr>
+              </thead>
+              <tbody id="eventsTableBody"></tbody>
+            </table>
+            <p id="emptyEventsText" class="empty-text">Ingen manuelle afleveringer endnu.</p>
+          </div>
+        </section>
+      </div>
+
+      <aside class="side-panel">
+        <section class="tool-panel">
+          <h2>Hold</h2>
+          <label class="input-label" for="teamANameInput">
+            Hold A
+            <input id="teamANameInput" type="text" autocomplete="off" />
+          </label>
+          <label class="input-label" for="teamDNameInput">
+            Hold D
+            <input id="teamDNameInput" type="text" autocomplete="off" />
+          </label>
+        </section>
+
+        <section class="tool-panel current-panel">
+          <h2>Aktiv annotation</h2>
+          <div id="activeTeamBadge" class="team-badge teamA">Hold A</div>
+          <div class="team-buttons">
+            <button id="teamAButton" type="button" data-team="teamA">
+              <span>Sæt aktiv</span>
+              <span id="teamAButtonText">Hold A</span>
+            </button>
+            <button id="teamDButton" type="button" data-team="teamD">
+              <span>Sæt aktiv</span>
+              <span id="teamDButtonText">Hold D</span>
+            </button>
+            <button id="registerPassButton" class="register-button" type="button">
+              <span class="hotkey">Space</span>
+              <span id="registerPassText">Registrer aflevering</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="tool-panel">
+          <h2>JSON</h2>
+          <div class="json-actions">
+            <label class="secondary-button" for="manualImportInput">Importer manuel</label>
+            <input id="manualImportInput" type="file" accept="application/json,.json" multiple />
+            <label class="secondary-button" for="systemImportInput">Importer system</label>
+            <input id="systemImportInput" type="file" accept="application/json,.json" />
+            <button id="exportManualButton" type="button" class="primary-button">Eksporter manuel</button>
+          </div>
+          <p id="statusMessage" class="status-message" aria-live="polite"></p>
+        </section>
+
+        <section class="tool-panel">
+          <h2>Opsummering</h2>
+          <dl class="stats-grid">
+            <div>
+              <dt id="manualTeamALabel">Manuel Hold A</dt>
+              <dd id="manualTeamAText">0</dd>
+            </div>
+            <div>
+              <dt id="manualTeamDLabel">Manuel Hold D</dt>
+              <dd id="manualTeamDText">0</dd>
+            </div>
+            <div>
+              <dt id="systemTeamALabel">System Hold A</dt>
+              <dd id="systemTeamAText">0</dd>
+            </div>
+            <div>
+              <dt id="systemTeamDLabel">System Hold D</dt>
+              <dd id="systemTeamDText">0</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="tool-panel">
+          <h2>Sammenligning</h2>
+          <label class="input-label" for="toleranceInput">
+            Tolerance sek.
+            <input id="toleranceInput" type="number" min="0" step="0.1" />
+          </label>
+          <dl class="stats-grid compare-grid">
+            <div>
+              <dt>Matchede</dt>
+              <dd id="matchedText">0</dd>
+            </div>
+            <div>
+              <dt>Manuel only</dt>
+              <dd id="manualOnlyText">0</dd>
+            </div>
+            <div>
+              <dt>System only</dt>
+              <dd id="systemOnlyText">0</dd>
+            </div>
+            <div>
+              <dt>Total diff</dt>
+              <dd id="totalDiffText">0</dd>
+            </div>
+          </dl>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
