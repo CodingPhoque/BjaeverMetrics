@@ -1,6 +1,34 @@
 // screen-season.jsx — season overview: trend chart + KPIs + match table. Exported to window.
 const { useState: useStateS, useMemo } = React;
 
+function normalizeTeamNameForCompare(name) {
+  return String(name || "")
+    .toLowerCase()
+    .replaceAll("æ", "ae")
+    .replaceAll("ø", "oe")
+    .replaceAll("å", "aa")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function bjaeverskovSide(match) {
+  const homeName = normalizeTeamNameForCompare(match.homeTeam);
+  const awayName = normalizeTeamNameForCompare(match.awayTeam);
+  const clubName = normalizeTeamNameForCompare(HOME_TEAM);
+  if (homeName === clubName || homeName.includes("bjaeverskov")) return "home";
+  if (awayName === clubName || awayName.includes("bjaeverskov")) return "away";
+  return "home";
+}
+
+function normalizedPossessionForSide(possession, side) {
+  const home = Number(possession?.home || 0);
+  const away = Number(possession?.away || 0);
+  const total = home + away;
+  if (total <= 0) return 0;
+  const value = side === "away" ? away : home;
+  return Math.round((value / total) * 1000) / 10;
+}
+
 // --- line/area trend chart ----------------------------------------------
 function TrendChart({ data, metric, accent, height = 220 }) {
   const [hover, setHover] = useStateS(null);
@@ -94,11 +122,20 @@ function KpiCard({ label, value, unit, delta, deltaLabel }) {
 
 function SeasonScreen({ matches, onNew, onOpen, layout = "kombineret" }) {
   const [metric, setMetric] = useStateS("possession");
-  // perspective = the club (home team's numbers)
+  // perspective = Bjæverskov's numbers, regardless of home/away side
   const series = useMemo(() => matches.map((m) => {
-    const months = ["jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec"];
     const [, mo, da] = m.date.split("-").map(Number);
-    return { id: m.id, opp: m.awayTeam, short: `${da}/${mo}`, poss: m.stats.possession.home, passes: m.stats.passes.home, date: m.date, raw: m };
+    const side = bjaeverskovSide(m);
+    const opponent = side === "home" ? m.awayTeam : m.homeTeam;
+    return {
+      id: m.id,
+      opp: opponent,
+      short: `${da}/${mo}`,
+      poss: normalizedPossessionForSide(m.stats.possession, side),
+      passes: m.stats.passes[side],
+      date: m.date,
+      raw: m,
+    };
   }), [matches]);
 
   if (series.length === 0) {

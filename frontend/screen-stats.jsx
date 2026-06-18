@@ -1,8 +1,19 @@
 // screen-stats.jsx — single match result: possession + passes. Exported to window.
 
+function normalizePair(home, away) {
+  const total = Number(home || 0) + Number(away || 0);
+  if (total <= 0) return { home: 0, away: 0 };
+  return {
+    home: Math.round((Number(home || 0) / total) * 1000) / 10,
+    away: Math.round((Number(away || 0) / total) * 1000) / 10,
+  };
+}
+
 function Donut({ home, away, homeColor, awayColor, size = 188 }) {
   const r = size / 2 - 16, c = 2 * Math.PI * r;
   const homeLen = c * (home / 100);
+  const leaderValue = home >= away ? home : away;
+  const leaderColor = home >= away ? homeColor : awayColor;
   return (
     <div style={{ position: "relative", width: size, height: size, flexShrink: 0 }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: "rotate(-90deg)" }}>
@@ -12,7 +23,7 @@ function Donut({ home, away, homeColor, awayColor, size = 188 }) {
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", textAlign: "center" }}>
         <div>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 38, fontWeight: 700, letterSpacing: "-0.02em", color: homeColor === "#f4f4f5" ? "var(--text)" : homeColor }}>{home}%</div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 38, fontWeight: 700, letterSpacing: "-0.02em", color: leaderColor === "#f4f4f5" ? "var(--text)" : leaderColor }}>{leaderValue}%</div>
           <div style={{ fontSize: 11.5, color: "var(--text-faint)", textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 600 }}>besiddelse</div>
         </div>
       </div>
@@ -21,14 +32,15 @@ function Donut({ home, away, homeColor, awayColor, size = 188 }) {
 }
 
 function HalfRow({ label, home, away, homeColor, awayColor }) {
+  const normalized = normalizePair(home, away);
   return (
     <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12.5, color: "var(--text-dim)", fontWeight: 600, marginBottom: 6 }}>
-        <span style={{ fontFamily: "var(--font-mono)", color: "var(--text)" }}>{home}%</span>
+        <span style={{ fontFamily: "var(--font-mono)", color: "var(--text)" }}>{normalized.home}%</span>
         <span>{label}</span>
-        <span style={{ fontFamily: "var(--font-mono)", color: "var(--text)" }}>{away}%</span>
+        <span style={{ fontFamily: "var(--font-mono)", color: "var(--text)" }}>{normalized.away}%</span>
       </div>
-      <SplitBar home={home} away={away} homeColor={homeColor} awayColor={awayColor} height={10} />
+      <SplitBar home={normalized.home} away={normalized.away} homeColor={homeColor} awayColor={awayColor} height={10} />
     </div>
   );
 }
@@ -85,10 +97,15 @@ function BigStat({ value, color, label }) {
 
 function MatchStatsScreen({ match, onSeason, isNew, colorMode = "hold" }) {
   const { stats, homeTeam, awayTeam } = match;
+  const possession = {
+    total: normalizePair(stats.possession.home, stats.possession.away),
+    h1: normalizePair(stats.possession.h1.home, stats.possession.h1.away),
+    h2: normalizePair(stats.possession.h2.home, stats.possession.h2.away),
+  };
   // Two color designs: team jersey colors, or the neutral theme palette (like the season chart).
   const homeColor = colorMode === "standard" ? "var(--accent)" : match.homeColor;
   const awayColor = colorMode === "standard" ? "var(--text-dim)" : match.awayColor;
-  const winner = stats.possession.home === stats.possession.away ? null : stats.possession.home > stats.possession.away ? "home" : "away";
+  const winner = possession.total.home === possession.total.away ? null : possession.total.home > possession.total.away ? "home" : "away";
   return (
     <div style={{ maxWidth: 1060, margin: "0 auto", padding: "0 28px 80px" }}>
       {isNew && (
@@ -116,16 +133,16 @@ function MatchStatsScreen({ match, onSeason, isNew, colorMode = "hold" }) {
         {/* possession */}
         <Card label="Boldbesiddelse" hint="hele kampen">
           <div style={{ display: "flex", gap: 26, alignItems: "center" }}>
-            <Donut home={stats.possession.home} away={stats.possession.away} homeColor={homeColor} awayColor={awayColor} />
+            <Donut home={possession.total.home} away={possession.total.away} homeColor={homeColor} awayColor={awayColor} />
             <div style={{ flex: 1 }}>
-              <Legend color={homeColor} name={homeTeam} value={`${stats.possession.home}%`} lead={winner === "home"} />
+              <Legend color={homeColor} name={homeTeam} value={`${possession.total.home}%`} lead={winner === "home"} />
               <div style={{ height: 12 }} />
-              <Legend color={awayColor} name={awayTeam} value={`${stats.possession.away}%`} lead={winner === "away"} />
+              <Legend color={awayColor} name={awayTeam} value={`${possession.total.away}%`} lead={winner === "away"} />
             </div>
           </div>
           <div style={{ borderTop: "1px solid var(--border)", marginTop: 22, paddingTop: 20 }}>
-            <HalfRow label="1. halvleg" home={stats.possession.h1.home} away={stats.possession.h1.away} homeColor={homeColor} awayColor={awayColor} />
-            <HalfRow label="2. halvleg" home={stats.possession.h2.home} away={stats.possession.h2.away} homeColor={homeColor} awayColor={awayColor} />
+            <HalfRow label="1. halvleg" home={possession.h1.home} away={possession.h1.away} homeColor={homeColor} awayColor={awayColor} />
+            <HalfRow label="2. halvleg" home={possession.h2.home} away={possession.h2.away} homeColor={homeColor} awayColor={awayColor} />
           </div>
         </Card>
 
