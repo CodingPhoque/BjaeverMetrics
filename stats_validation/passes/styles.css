@@ -237,6 +237,51 @@ th { color: var(--muted); font-size: 12px; text-transform: uppercase; }
 .status-message { margin: 12px 0 0; min-height: 22px; }
 .status-message.error { color: var(--danger); }
 
+.comparison-table-wrap {
+  margin-top: 14px;
+  overflow-x: auto;
+}
+
+.comparison-table {
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.comparison-table caption {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 0 0 6px;
+  text-align: left;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 9px 8px;
+  text-align: center;
+}
+
+.comparison-table th:first-child {
+  text-align: left;
+  width: 40%;
+}
+
+.comparison-table tbody th {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: none;
+}
+
+.comparison-table td {
+  font-size: 16px;
+  font-weight: 800;
+}
+
 .stats-grid {
   display: grid;
   gap: 10px;

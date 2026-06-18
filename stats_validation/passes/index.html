@@ -124,17 +124,51 @@
             Tolerance sek.
             <input id="toleranceInput" type="number" min="0" step="0.1" />
           </label>
+          <div class="comparison-table-wrap">
+            <table class="comparison-table">
+              <caption>Pr. hold</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Måling</th>
+                  <th id="comparisonTeamAHeader" scope="col">Hold A</th>
+                  <th id="comparisonTeamDHeader" scope="col">Hold D</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Matchede</th>
+                  <td id="teamAMatchedText">0</td>
+                  <td id="teamDMatchedText">0</td>
+                </tr>
+                <tr>
+                  <th scope="row">Manuel only</th>
+                  <td id="teamAManualOnlyText">0</td>
+                  <td id="teamDManualOnlyText">0</td>
+                </tr>
+                <tr>
+                  <th scope="row">System only</th>
+                  <td id="teamASystemOnlyText">0</td>
+                  <td id="teamDSystemOnlyText">0</td>
+                </tr>
+                <tr>
+                  <th scope="row">Diff</th>
+                  <td id="teamADiffText">0</td>
+                  <td id="teamDDiffText">0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <dl class="stats-grid compare-grid">
             <div>
-              <dt>Matchede</dt>
+              <dt>Matchede total</dt>
               <dd id="matchedText">0</dd>
             </div>
             <div>
-              <dt>Manuel only</dt>
+              <dt>Manuel only total</dt>
               <dd id="manualOnlyText">0</dd>
             </div>
             <div>
-              <dt>System only</dt>
+              <dt>System only total</dt>
               <dd id="systemOnlyText">0</dd>
             </div>
             <div>

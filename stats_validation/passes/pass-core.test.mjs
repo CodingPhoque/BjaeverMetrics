@@ -69,6 +69,26 @@ test("comparePassEvents matches nearest system event by team within tolerance", 
   assert.equal(comparison.manualOnly.length, 1);
   assert.equal(comparison.systemOnly.length, 1);
   assert.equal(comparison.differences.total, 0);
+  assert.deepEqual(comparison.matchCounts, {
+    teamACount: 1,
+    teamDCount: 1,
+    totalCount: 2,
+  });
+  assert.deepEqual(comparison.manualOnlyCounts, {
+    teamACount: 1,
+    teamDCount: 0,
+    totalCount: 1,
+  });
+  assert.deepEqual(comparison.systemOnlyCounts, {
+    teamACount: 1,
+    teamDCount: 0,
+    totalCount: 1,
+  });
+  assert.deepEqual(comparison.differences, {
+    teamA: 0,
+    teamD: 0,
+    total: 0,
+  });
 });
 
 test("manual payload validation rejects wrong type", () => {

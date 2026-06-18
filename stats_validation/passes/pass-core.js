@@ -188,6 +188,8 @@ export function comparePassEvents(manualEvents, systemEvents, toleranceSeconds =
   const manualCounts = countPassesByTeam(manual);
   const systemCounts = countPassesByTeam(system);
   const matchCounts = countPassesByTeam(matches.map((match) => match.manualEvent));
+  const manualOnlyCounts = countPassesByTeam(manualOnly);
+  const systemOnlyCounts = countPassesByTeam(systemOnly);
 
   return {
     toleranceSeconds: tolerance,
@@ -202,6 +204,8 @@ export function comparePassEvents(manualEvents, systemEvents, toleranceSeconds =
     manualOnly,
     systemOnly,
     matchCounts,
+    manualOnlyCounts,
+    systemOnlyCounts,
   };
 }
 

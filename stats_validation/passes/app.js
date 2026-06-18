@@ -49,6 +49,16 @@ const dom = {
   systemTeamAText: document.querySelector("#systemTeamAText"),
   systemTeamDText: document.querySelector("#systemTeamDText"),
   toleranceInput: document.querySelector("#toleranceInput"),
+  comparisonTeamAHeader: document.querySelector("#comparisonTeamAHeader"),
+  comparisonTeamDHeader: document.querySelector("#comparisonTeamDHeader"),
+  teamAMatchedText: document.querySelector("#teamAMatchedText"),
+  teamDMatchedText: document.querySelector("#teamDMatchedText"),
+  teamAManualOnlyText: document.querySelector("#teamAManualOnlyText"),
+  teamDManualOnlyText: document.querySelector("#teamDManualOnlyText"),
+  teamASystemOnlyText: document.querySelector("#teamASystemOnlyText"),
+  teamDSystemOnlyText: document.querySelector("#teamDSystemOnlyText"),
+  teamADiffText: document.querySelector("#teamADiffText"),
+  teamDDiffText: document.querySelector("#teamDDiffText"),
   matchedText: document.querySelector("#matchedText"),
   manualOnlyText: document.querySelector("#manualOnlyText"),
   systemOnlyText: document.querySelector("#systemOnlyText"),
@@ -500,6 +510,16 @@ function renderSummary() {
 
 function renderComparison() {
   const comparison = comparePassEvents(state.manualEvents, state.systemEvents, state.toleranceSeconds);
+  dom.comparisonTeamAHeader.textContent = state.teamAName;
+  dom.comparisonTeamDHeader.textContent = state.teamDName;
+  dom.teamAMatchedText.textContent = comparison.matchCounts.teamACount;
+  dom.teamDMatchedText.textContent = comparison.matchCounts.teamDCount;
+  dom.teamAManualOnlyText.textContent = comparison.manualOnlyCounts.teamACount;
+  dom.teamDManualOnlyText.textContent = comparison.manualOnlyCounts.teamDCount;
+  dom.teamASystemOnlyText.textContent = comparison.systemOnlyCounts.teamACount;
+  dom.teamDSystemOnlyText.textContent = comparison.systemOnlyCounts.teamDCount;
+  dom.teamADiffText.textContent = signedNumber(comparison.differences.teamA);
+  dom.teamDDiffText.textContent = signedNumber(comparison.differences.teamD);
   dom.matchedText.textContent = comparison.matches.length;
   dom.manualOnlyText.textContent = comparison.manualOnly.length;
   dom.systemOnlyText.textContent = comparison.systemOnly.length;
