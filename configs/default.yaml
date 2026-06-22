@@ -41,8 +41,8 @@ stats:
     use_ball_kalman_filter: true
     max_ball_interpolation_seconds: 1.00
   passes:
-    min_control_seconds: 0.30
-    max_pass_gap_seconds: 2.00
+    min_control_seconds: 0.20
+    max_pass_gap_seconds: 3.00
   turnovers:
     min_control_seconds: 0.30
     max_turnover_gap_seconds: 2.00
