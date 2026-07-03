@@ -1,0 +1,440 @@
+:root {
+  --bg: #f4f0e8;
+  --panel: #fffaf1;
+  --panel-strong: #ffffff;
+  --text: #181b1f;
+  --muted: #63615b;
+  --border: #d8d0c3;
+  --accent: #166f63;
+  --accent-dark: #0f5148;
+  --accent-soft: #d9ebe6;
+  --team-a: #1459b8;
+  --team-a-soft: #dbe9ff;
+  --team-d: #b03434;
+  --team-d-soft: #ffe1df;
+  --danger: #a73528;
+  --danger-soft: #ffe6e2;
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button,
+label[for] {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.app-shell {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.topbar {
+  align-items: end;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 1;
+}
+
+h2 {
+  font-size: 18px;
+}
+
+.workspace {
+  align-items: start;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+}
+
+.video-column,
+.side-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.tool-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.video-panel {
+  background: #151515;
+  color: #f7f4ed;
+}
+
+.file-row,
+.section-heading,
+.json-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.file-row {
+  margin-bottom: 14px;
+}
+
+.file-name {
+  color: #d9d4c8;
+  flex: 1;
+  min-width: 180px;
+  overflow-wrap: anywhere;
+}
+
+input[type="file"] {
+  inline-size: 1px;
+  opacity: 0;
+  position: absolute;
+}
+
+video {
+  aspect-ratio: 16 / 9;
+  background: #050505;
+  border: 1px solid #343434;
+  border-radius: 6px;
+  display: block;
+  width: 100%;
+}
+
+.video-meta {
+  color: #e9e4d9;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button,
+.state-buttons button,
+.delete-button,
+.time-button {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  display: inline-flex;
+  font-weight: 700;
+  justify-content: center;
+  min-height: 40px;
+  padding: 9px 12px;
+}
+
+.primary-button {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.primary-button:hover {
+  background: var(--accent-dark);
+}
+
+.secondary-button {
+  background: var(--panel-strong);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.secondary-button:hover {
+  border-color: var(--accent);
+}
+
+.danger-button {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.danger-button:hover {
+  border-color: var(--danger);
+}
+
+.input-label {
+  color: var(--muted);
+  display: grid;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.input-label input {
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  min-height: 40px;
+  padding: 9px 10px;
+  width: 100%;
+}
+
+.current-panel {
+  display: grid;
+  gap: 14px;
+}
+
+.possession-badge {
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.15;
+  min-height: 72px;
+  padding: 20px;
+  text-align: center;
+}
+
+.possession-badge.teamA {
+  background: var(--team-a-soft);
+  color: var(--team-a);
+}
+
+.possession-badge.teamD {
+  background: var(--team-d-soft);
+  color: var(--team-d);
+}
+
+.state-buttons {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.state-buttons button {
+  background: var(--panel-strong);
+  border-color: var(--border);
+  color: var(--text);
+  display: grid;
+  gap: 5px;
+  min-height: 78px;
+  padding: 10px 6px;
+}
+
+.state-buttons button[data-state="teamA"]:hover,
+.state-buttons button[data-state="teamA"].active {
+  border-color: var(--team-a);
+  color: var(--team-a);
+}
+
+.state-buttons button[data-state="teamD"]:hover,
+.state-buttons button[data-state="teamD"].active {
+  border-color: var(--team-d);
+  color: var(--team-d);
+}
+
+.state-buttons .toggle-possession-button {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+  grid-column: 1 / -1;
+}
+
+.state-buttons .toggle-possession-button:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+}
+
+.hotkey {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.table-wrap {
+  margin-top: 12px;
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 8px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+th {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.action-column {
+  text-align: right;
+  width: 72px;
+}
+
+td:last-child {
+  text-align: right;
+}
+
+.time-button {
+  background: transparent;
+  color: var(--accent);
+  min-height: 32px;
+  padding: 4px 0;
+}
+
+.time-button:hover {
+  text-decoration: underline;
+}
+
+.delete-button {
+  background: var(--danger-soft);
+  color: var(--danger);
+  min-height: 32px;
+  padding: 5px 9px;
+}
+
+.state-pill {
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 5px 9px;
+}
+
+.state-pill.teamA {
+  background: var(--team-a-soft);
+  color: var(--team-a);
+}
+
+.state-pill.teamD {
+  background: var(--team-d-soft);
+  color: var(--team-d);
+}
+
+.empty-text {
+  color: var(--muted);
+  margin: 14px 0 0;
+}
+
+.json-actions {
+  justify-content: start;
+  margin-top: 12px;
+}
+
+.status-message {
+  color: var(--muted);
+  margin: 12px 0 0;
+  min-height: 22px;
+}
+
+.status-message.error {
+  color: var(--danger);
+}
+
+.stats-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 14px 0 0;
+}
+
+.stats-grid div {
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+.stats-grid dt {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.stats-grid dd {
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0;
+}
+
+@media (max-width: 980px) {
+  .app-shell {
+    padding: 16px;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .side-panel {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .topbar,
+  .file-row,
+  .section-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .side-panel,
+  .state-buttons,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .danger-button,
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+}

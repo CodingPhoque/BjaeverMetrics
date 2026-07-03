@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boldbesiddelse | Validering</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Stats validation</p>
+        <h1>Boldbesiddelse</h1>
+      </div>
+      <button id="clearAllButton" class="danger-button" type="button">Ryd annotationer</button>
+    </header>
+
+    <section class="workspace" aria-label="Annotering">
+      <div class="video-column">
+        <section class="tool-panel video-panel" aria-label="Video">
+          <div class="file-row">
+            <label class="primary-button" for="videoFileInput">Vælg video</label>
+            <input id="videoFileInput" type="file" accept="video/*" />
+            <span id="videoFileName" class="file-name">Ingen video valgt</span>
+          </div>
+
+          <video id="matchVideo" controls playsinline preload="metadata"></video>
+
+          <div class="video-meta" aria-live="polite">
+            <span><strong>Tid:</strong> <output id="currentTimeText">00:00.0</output></span>
+            <span><strong>Varighed:</strong> <output id="durationText">00:00.0</output></span>
+          </div>
+        </section>
+
+        <section class="tool-panel events-panel" aria-label="Registrerede skift">
+          <div class="section-heading">
+            <h2>Registrerede skift</h2>
+            <button id="undoButton" type="button" class="secondary-button">Fortryd</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Tidspunkt</th>
+                  <th>Tilstand</th>
+                  <th class="action-column">Slet</th>
+                </tr>
+              </thead>
+              <tbody id="eventsTableBody"></tbody>
+            </table>
+            <p id="emptyEventsText" class="empty-text">Ingen annotationer endnu.</p>
+          </div>
+        </section>
+      </div>
+
+      <aside class="side-panel">
+        <section class="tool-panel" aria-label="Hold">
+          <h2>Hold</h2>
+          <label class="input-label" for="teamANameInput">
+            Hold A
+            <input id="teamANameInput" type="text" autocomplete="off" />
+          </label>
+          <label class="input-label" for="teamDNameInput">
+            Hold D
+            <input id="teamDNameInput" type="text" autocomplete="off" />
+          </label>
+        </section>
+
+        <section class="tool-panel current-panel" aria-label="Nuværende boldbesiddelse">
+          <h2>Nuværende</h2>
+          <div id="currentPossessionBadge" class="possession-badge teamA">Hold A</div>
+
+          <div class="state-buttons" aria-label="Registrer boldbesiddelse">
+            <button id="togglePossessionButton" class="toggle-possession-button" type="button">
+              <span class="hotkey">Space</span>
+              <span id="togglePossessionText">Skift hold</span>
+            </button>
+            <button id="teamAButton" type="button" data-state="teamA">
+              <span>Sæt</span>
+              <span id="teamAButtonText">Hold A</span>
+            </button>
+            <button id="teamDButton" type="button" data-state="teamD">
+              <span>Sæt</span>
+              <span id="teamDButtonText">Hold D</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="tool-panel" aria-label="JSON">
+          <h2>JSON</h2>
+          <div class="json-actions">
+            <label class="secondary-button" for="jsonImportInput">Importer JSON</label>
+            <input id="jsonImportInput" type="file" accept="application/json,.json" />
+            <button id="exportJsonButton" type="button" class="primary-button">Eksporter JSON</button>
+          </div>
+          <p id="statusMessage" class="status-message" aria-live="polite"></p>
+        </section>
+
+        <section class="tool-panel" aria-label="Resultat">
+          <h2>Resultat</h2>
+          <dl class="stats-grid">
+            <div>
+              <dt id="teamADurationLabel">Hold A</dt>
+              <dd id="teamADurationText">0.0 s</dd>
+            </div>
+            <div>
+              <dt id="teamDDurationLabel">Hold D</dt>
+              <dd id="teamDDurationText">0.0 s</dd>
+            </div>
+            <div>
+              <dt id="teamAPercentageLabel">Hold A %</dt>
+              <dd id="teamAPercentageText">0.0%</dd>
+            </div>
+            <div>
+              <dt id="teamDPercentageLabel">Hold D %</dt>
+              <dd id="teamDPercentageText">0.0%</dd>
+            </div>
+          </dl>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
