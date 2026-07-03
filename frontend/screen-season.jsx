@@ -26,7 +26,7 @@ function normalizedPossessionForSide(possession, side) {
   const total = home + away;
   if (total <= 0) return 0;
   const value = side === "away" ? away : home;
-  return Math.round((value / total) * 1000) / 10;
+  return Math.round((value / total) * 100);
 }
 
 // --- line/area trend chart ----------------------------------------------

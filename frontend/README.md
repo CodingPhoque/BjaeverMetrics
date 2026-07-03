@@ -32,7 +32,7 @@ python -m http.server -d frontend 5500
 | `app.jsx` | Rod-komponent: skærm-navigation (sæson → upload → analyse → kamp), tweaks. |
 | `theme.jsx` | Designtokens (3 temaer), trøjefarve-presets, hjælpefunktioner, seed-sæson. |
 | `screen-upload.jsx` | Upload + holdopsætning + interaktiv video-trim (halvleg-markering). |
-| `screen-processing.jsx` | "Analyserer video"-tilstand (spejler pipeline-trinene). |
+| `screen-processing.jsx` | "Analyserer video"-tilstand med én samlet analysestatus. |
 | `screen-stats.jsx` | Enkeltkamp: boldbesiddelse + afleveringer. |
 | `screen-season.jsx` | Sæsonoversigt: trendgraf, KPI'er, kamptabel. |
 | `tweaks-panel.jsx` | Internt panel til at skifte tema/layout. Kan fjernes i produktion (se nederst). |
