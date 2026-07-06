@@ -10,7 +10,7 @@ from fodbold.pipeline import run_pipeline
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run the BjaeverMetrics video pipeline.")
-    parser.add_argument("--config", type=Path, default=Path("configs/default.yaml"))
+    parser.add_argument("--config", type=Path, default=Path("config/default.yaml"))
     parser.add_argument("--input", required=True, help="Path to the video file")
     parser.add_argument("--home-team", required=True, help="Name of the home team")
     parser.add_argument("--away-team", required=True, help="Name of the away team")

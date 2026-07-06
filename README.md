@@ -1,9 +1,49 @@
 # BjaeverMetrics
-BjaeverMetrics is an advanced football analysis program designed for IF Frem Bjæverskov. It is used by coaches for advanced statistic to build winning strategies.
+BjaeverMetrics is a football analysis program designed for IF Frem Bjæverskov. It's developed as a CS finals project, and is built to be used by coaches for generating statistics from football videos to build winning strategies.
 
-Run pip install -r requirement.txt
+<div style="display:grid; grid-template-columns: 1fr 1fr 0.9fr; grid-auto-rows: min-content; gap:12px; align-items:start;">
+	<img src="readme_screenshots\Screen Shot 2026-07-03 at 17.45.36.png" style="grid-column:1; grid-row:1 / span 2; width:100%; height:auto;" />
+	<img src="readme_screenshots\Screen Shot 2026-07-03 at 17.43.40.png" style="grid-column:2; grid-row:1 / span 2; width:100%; height:auto;" />
+	<img src="readme_screenshots\Screen Shot 2026-07-04 at 08.59.09.png" style="grid-column:3; grid-row:1; width:100%; height:auto;" />
+</div> </br>
 
-## Local web app
+# Features
+Automatic generation of possession and pass statistics
+
+
+# Tech stack
+- Python 3.14.0
+- Ultralytics API
+- React 18.3.1
+<!-- - Pytest (check tests again and when validated add 'Pytest' back into 'Tech stack') -->
+
+
+# Architecture
+The system consists of a pipeline with four steps:
+1. Video input and metadata extraction
+2. Object detection and tracking using Ultralytics' API
+3. Team assignment using k-means 
+4. Statistics generation
+
+
+
+# Getting started
+A virtual environment is recommended so the dependencies don't interfere with other projects.
+
+Create a Python virtual environment:
+```
+python -m venv .venv
+```
+
+Activate the environment:
+```
+.\.venv\Scripts\Activate.ps1
+```
+
+If you encounter errors while activating the environment, loosen the execution policy to allow PowerShell to activate the environment:
+```
+Set-ExectutionPolicy RemoteSigned
+```
 
 Install dependencies:
 
@@ -11,7 +51,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Start the local API and frontend:
+Start the local API and serve the frontend:
 
 ```bash
 uvicorn bjaevermetrics_app:app --reload --host 127.0.0.1 --port 8000
@@ -19,69 +59,17 @@ uvicorn bjaevermetrics_app:app --reload --host 127.0.0.1 --port 8000
 
 Open http://127.0.0.1:8000 in the browser.
 
-The local app serves `frontend/`, receives video uploads at `POST /api/analyze`,
-runs the pipeline on the local machine, stores results in SQLite, and shows saved
-matches through `GET /api/matches`.
+Follow the UI guidance to analyze a video. 
 
 
 
+Notes: 
+- A relatively powerful GPU is required to analyze a video (it takes about 1.5 hours on an RTX 4070 Ti)
+- The UI is in Danish only
+- The system has been tested with Python 3.14.0, earlier versions have not been tested
+- config/default.yaml contains config parameters used at runtime including object confidence thresholds, object detection model used, whether object detection runs on CPU or GPU, tracking algorithm used, stats output path, and more
 
-BJEAVERMETRICS/
-├── .venv/
-├── .gitignore
-├── pyproject.toml
-├── requirements.txt
-├── requirements-dev.txt
-├── README.md
-│
-├── configs/
-│   ├── default.yaml          # default runtime config
-│   └── test.yaml             # overrides for --test mode
-│
-├── data/                     # gitignored (large files)
-│   ├── raw/                  # original Veo MP4s
-│   ├── annotated/            # your labeled frames for fine-tuning - training data/benchmarking data
-│   ├── interim/              # detections.json, tracking.json per match
-│   ├── processed/            # final stats.json/parquet
-│   └── models/               # best.pt, pretrained weights
-│
-├── src/
-│   └── fodbold/              # your package
-│       ├── __init__.py
-│       ├── config.py         # load + validate config
-│       ├── cli.py            # argparse/typer logic (called by main.py)
-│       │
-│       ├── io/
-│       │   ├── __init__.py
-│       │   ├── video.py      # OpenCV reader, frame iterator
-│       │   └── metadata.py   # holdnavne, halvleg, hjemme/ude
-│       │
-│       ├── detection/
-│       │   ├── __init__.py
-│       │   └── detector.py   # YOLO wrapper
-│       │
-│       ├── tracking/
-│       │   ├── __init__.py
-│       │   └── tracker.py    # ByteTrack/BoT-SORT wrapper
-│       │
-│       ├── stats/
-│       │   ├── __init__.py
-│       │   ├── possession.py
-│       │   ├── touches.py
-│       │   └── passes.py
-│       │
-│       └── pipeline.py       # orchestrates the stages
-│
-├── tests/
-│   ├── __init__.py
-│   ├── test_video.py
-│   ├── test_detector.py
-│   └── fixtures/             # tiny test clips
-│
-├── notebooks/                # spikes, model comparisons, exploration
-│   
-│
-├── scripts/                  # one-off utilities
-│   
-│
-└── main.py                   # thin CLI wrapper → src/fodbold/cli.py
+# Authors
+Githubs:  
+[@CodingPhoque](https://github.com/CodingPhoque)  
+[@kantsteen](https://github.com/kantsteen)

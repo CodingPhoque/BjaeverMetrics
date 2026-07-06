@@ -38,7 +38,7 @@ def parse_args() -> argparse.Namespace:
             "This is a throwaway benchmarking script, not part of the production pipeline."
         )
     )
-    parser.add_argument("--config", type=Path, default=PROJECT_ROOT / "configs" / "default.yaml")
+    parser.add_argument("--config", type=Path, default=PROJECT_ROOT / "config" / "default.yaml")
     parser.add_argument("--video", type=Path, default=PROJECT_ROOT / "data" / "raw" / "Serie_4_Ringsted_IF.mp4")
     parser.add_argument("--model", type=Path, default=None)
     parser.add_argument("--start-seconds", type=float, default=600.0)
