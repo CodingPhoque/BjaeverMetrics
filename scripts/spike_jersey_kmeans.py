@@ -48,7 +48,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--video", required=True, help="Path to video file")
     parser.add_argument(
         "--config",
-        default="configs/default.yaml",
+        default="config/default.yaml",
         help="Path to config YAML",
     )
     parser.add_argument(

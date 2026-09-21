@@ -34,7 +34,7 @@ from fodbold.pipeline import run_pipeline  # noqa: E402
 
 FRONTEND_DIR = PROJECT_ROOT / "frontend"
 RAW_UPLOAD_DIR = PROJECT_ROOT / "data" / "raw"
-CONFIG_PATH = PROJECT_ROOT / "configs" / "default.yaml"
+CONFIG_PATH = PROJECT_ROOT / "config" / "default.yaml"
 
 app = FastAPI(title="BjaeverMetrics Local API")
 app.add_middleware(

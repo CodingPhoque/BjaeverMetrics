@@ -1,0 +1,65 @@
+video:
+  fps_target: 30
+  test_mode_seconds: 30
+
+paths:
+  models_dir: "data/models"
+  interim_dir: "data/interim"
+  processed_dir: "data/processed"
+
+
+detection:
+  model_file: "yolo26mtrained.pt"   # your trained local .pt file, ensure precise filename
+  device: "cpu"                    # "cuda" | "cpu"
+  image_size: 1280
+  confidence_threshold:
+    ball: 0.25
+    player: 0.50
+    referee: 0.50
+    goalkeeper: 0.50
+
+team_classification:
+  enabled: true
+  min_fit_samples: 50             # minimum valid player jersey crops before fitting
+  min_observations_per_track: 3   # minimum valid player observations before assigning a track
+  min_assignment_confidence: 0.60 # minimum majority-vote share before assigning a track
+  color_space: "lab"            
+  jersey_crop:
+    x_margin_ratio: 0.20          # trims bbox sides to reduce arms/background
+    y_start_ratio: 0.20           # skips head/upper shoulders
+    y_end_ratio: 0.65             # avoids shorts/legs
+  grass_filter:
+    min_pixels: 20                # reject crops with too few non-grass pixels
+    hsv_lower: [35, 40, 40]       # tune if field lighting makes grass leak through
+    hsv_upper: [90, 255, 255]     # tune together with hsv_lower
+
+stats:
+  possession:
+    max_possession_distance_ratio: 0.55
+    min_possession_confirm_seconds: 0.30
+    max_ball_missing_seconds: 0.50
+    use_ball_kalman_filter: true
+    max_ball_interpolation_seconds: 1.00
+  passes:
+    min_control_seconds: 0.20
+    max_pass_gap_seconds: 3.00
+  turnovers:
+    min_control_seconds: 0.30
+    max_turnover_gap_seconds: 2.00
+
+tracking:
+  algorithm: "botsort"            # "bytetrack" | "botsort"
+  track_buffer: 30                # frames to keep "lost" track alive
+  match_threshold: 0.8
+
+output:
+  format: "json"                  # "json" | "parquet"
+
+debug:
+  save_detection_video: false     # boxes + class labels
+  save_tracking_video: false      # boxes + IDs (color-coded per track)
+  save_final_video: false         # everything overlaid
+  output_dir: "data/debug"
+
+logging:
+  level: "INFO"
